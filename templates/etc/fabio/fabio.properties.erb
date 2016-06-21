@@ -1,0 +1,46 @@
+# This file is managed by puppet
+
+<% if @listen_proxy_addr -%>
+proxy.addr = <%= @listen_proxy_addr %>
+<% end -%>
+<% if @header_clientip -%>
+proxy.header.clientip = <%= @header_clientip %>
+<% end -%>
+<% if @header_tls -%>
+proxy.header.tls = <%= @header_tls %>
+proxy.header.tls.value = <%= @header_tls_value %>
+<% end -%>
+<% if @registry_file_path -%>
+registry.file.path = <%= @registry_file_path  %>
+<% end -%>
+<% if @consul_addr -%>
+registry.consul.addr = <%= @consul_addr %>
+<% end -%>
+<% if @consul_token -%>
+registry.consul.token = <%= @consul_token %>
+<% end -%>
+<% if @consul_keypath -%>
+registry.consul.kvpath = <%= @consul_kvpath %>
+<% end -%>
+<% if @consul_tagprefix -%>
+registry.consul.tagprefix = <%= @consul_tagprefix %>
+<% end -%>
+<% if @consul_register_enabled -%>
+registry.consul.register.enabled = <%= @consul_register_enabled %>
+registry.consul.register.addr = <%= @consul_register_addr %>
+registry.consul.register.name = <%= @consul_register_name %>
+registry.consul.register.tags = <%= @consul_register_tags %>
+registry.consul.register.checkInterval = <%= @consul_register_checkinterval %>
+registry.consul.register.checkTimeout = <%= @consul_register_checktimeout %>
+<% end -%>
+<%- if @registry_static_routes -%>
+registry.static.routes = \
+  <%- @registry_static_routes.sort.each do |route_name,route_value| -%>
+    route add <%= route_name %> <%= route_value %>
+  <%- end %>
+<%- end -%>
+<%- @config_hash.each do |key, hash| -%>
+  <%- hash.each do |hash_key, hash_value| -%>
+<%= key %>.<%= hash_key %> = <%= hash_value %>
+  <%- end -%>
+<%- end -%>
